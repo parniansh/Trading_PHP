@@ -15,20 +15,13 @@ use App\Http\Controllers\LoginController;
 |
 */
 Route::group(['prefix'=>'v1'],function(){
-    Route::put('/', function () {
-        return 500;
-    });    
-});
-Route::group(['prefix'=>'v2'],function(){
-    Route::get('/', function () {
-        return 10000;
-    });    
-});
-// Route::post('/login', [LoginController::class, 'login']);
-Route::post('/auth/get-otp-code', [LoginController::class, 'otpCodeRequest']);
-Route::post('/auth/token', [LoginController::class, 'OtpLogin']);
-Route::middleware('auth:api')->post('logout', [LoginController::class, 'Logout']);
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::group(['prefix'=>'auth'],function(){
+        Route::post('/get-otp-code', [LoginController::class, 'otpCodeRequest']);
+        Route::post('/token', [LoginController::class, 'OtpLogin']);
+    });
+    Route::group([ 'middleware' => 'auth:api' ], function() {
+        foreach (glob(__DIR__.'/v1/*.php') as $fileName){
+            include_once $fileName;
+        }
+    });
 });
