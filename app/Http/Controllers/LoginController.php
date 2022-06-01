@@ -84,6 +84,9 @@ class LoginController extends Controller
         }
         UserCodes::where('user-id',$user->id)->update(['expired'=>1]);
         return new SuccessResource((object)['data'=>(object)['accessToken'=>$user->createToken('AccessToken')->accessToken,'refreshToken'=>'','tokenType'=>'Bearer']]);
+      //  return redirect()->route('referral', [$request]);
+
+
     }
 
     public function Logout(Request $request ){

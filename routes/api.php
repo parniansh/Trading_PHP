@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ReferralController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,9 @@ Route::group(['prefix'=>'v1'],function(){
     Route::group(['prefix'=>'auth'],function(){
         Route::post('/get-otp-code', [LoginController::class, 'otpCodeRequest']);
         Route::post('/token', [LoginController::class, 'OtpLogin']);
+        Route::post('/referral', [ReferralController::class, 'asignReferralCode']);
+
+    
     });
     Route::group([ 'middleware' => 'auth:api' ], function() {
         foreach (glob(__DIR__.'/v1/*.php') as $fileName){
