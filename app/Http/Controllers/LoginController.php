@@ -15,6 +15,7 @@ use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Kavenegar;
+use App\Http\Controllers\ReferralController;
 
 class LoginController extends Controller
 {
@@ -36,6 +37,10 @@ class LoginController extends Controller
                 ]);
             }
            $user = User::create(["phone"=> $request -> phone,'name'=>$request->name, "password"=>$password]);
+           (new ReferralController)->asignReferralCode((object)[
+               'parentReferralCode'=> $request->parentReferralCode,
+               'userId'=> $user->id
+           ]);
         }else{
             $user = User::where("phone",$request -> phone)->update(["password"=>$password]);
         }
@@ -84,7 +89,6 @@ class LoginController extends Controller
         }
         UserCodes::where('user-id',$user->id)->update(['expired'=>1]);
         return new SuccessResource((object)['data'=>(object)['accessToken'=>$user->createToken('AccessToken')->accessToken,'refreshToken'=>'','tokenType'=>'Bearer']]);
-      //  return redirect()->route('referral', [$request]);
 
 
     }

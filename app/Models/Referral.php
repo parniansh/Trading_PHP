@@ -13,7 +13,7 @@ class Referral extends Model
     
 
     protected $fillable = [
-        'refferal_code',
+        'referral_code',
         'parent_id',
         'parent_referral_code',
         'categorySerial',
