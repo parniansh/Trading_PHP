@@ -17,15 +17,15 @@ class ReferralController extends Controller
         return $referralCode;
     }
 
-   public function asignReferralCode($obj){
-       $referralCode = ReferralController::generateReferralCode();
-      $requestParentRefferal = $obj->parentReferralCode;
-       if(!$requestParentRefferal){
+   public function asignReferralCode($parentReferralCode, $userId){
+    // $userId = $request->userId;
+    // $parentReferralCode = $request->parentReferralCode;
+       $referralCode = $this->generateReferralCode();
+       if(!$parentReferralCode){
         $parentId = null;
-        $categorySerial = strval($obj->userId);
-        $parentReferralCode = null;
+        $categorySerial = strval($userId);
        }else{
-        $parentReferral_DB = Referral::where(["referral_code"=> $requestParentRefferal])->first();
+        $parentReferral_DB = Referral::where(["referral_code"=> $parentReferralCode])->first();
         if(!$parentReferral_DB){
             return new ErrorResource((object)[
                 'error' => __('errors.Error'),
@@ -33,17 +33,13 @@ class ReferralController extends Controller
             ]);
         }
         $parentId =$parentReferral_DB->user_id ;
-        $categorySerial = $parentReferral_DB->category_serial.'/'.$obj->userId;
-        $parentReferralCode = $parentReferral_DB->referral_code;
+        $categorySerial = $parentReferral_DB->category_serial.'/'.$userId;
 
        }
-       
+      $referral = Referral::create(['user_id'=> $userId, 'referral_code'=> $referralCode, 'parent_id'=>$parentId ,
+       'category_serial'=> $categorySerial]);
 
-        
-
-       return  $asignedReferralCode = Referral::create(['user_id'=> $obj->userId, 'referral_code'=> $referralCode, 'parent_id'=>$parentId ,
-        'category_serial'=> $categorySerial, 'parent_referral_code'=> $parentReferralCode]);
-
+       return  $referral;
    }
 }
 

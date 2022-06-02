@@ -8,7 +8,6 @@ use App\Http\Requests\OtpLoginRequest;
 use App\Http\Resources\ErrorResource;
 use App\Http\Resources\SuccessResource;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use App\Models\UserCodes;
 use Exception;
@@ -37,10 +36,9 @@ class LoginController extends Controller
                 ]);
             }
            $user = User::create(["phone"=> $request -> phone,'name'=>$request->name, "password"=>$password]);
-           (new ReferralController)->asignReferralCode((object)[
-               'parentReferralCode'=> $request->parentReferralCode,
-               'userId'=> $user->id
-           ]);
+           //(new ReferralController)->asignReferralCode($request->parentReferralCode, $user->id);
+          $ref = app('App\Http\Controllers\ReferralController')->asignReferralCode($request->parentReferralCode, $user->id);
+           // app(ReferralController::class)->asignReferralCode($request->parentReferralCode, $user->id);
         }else{
             $user = User::where("phone",$request -> phone)->update(["password"=>$password]);
         }
@@ -57,6 +55,7 @@ class LoginController extends Controller
             $template = "login";
             $result = Kavenegar::VerifyLookup($receptor, $token, $token2=null, $token3=null, $template, $type = null);
             return new SuccessResource((object)['data'=>(object)$result[0]]);
+
         }
         catch(\Kavenegar\Exceptions\ApiException $e){
             // در صورتی که خروجی وب سرویس 200 نباشد این خطا رخ می دهد

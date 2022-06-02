@@ -13,16 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('referral', function (Blueprint $table) {
+        Schema::create('referrals', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->unsigned();
             $table->string('referral_code'); 
-            $table->integer('parent_id');
+            $table->integer('parent_id')->nullable();
             $table->string('category_serial');
-            $table->string('parent_referral_code');
+            $table->string('parent_referral_code')->nullable();
 
         });
-        Schema::table('referral', function($table) {
+        Schema::table('referrals', function($table) {
             $table->foreign('user_id')->references('id')->on('users');
         });
     }
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('referral');
+        Schema::dropIfExists('referrals');
     }
 };
