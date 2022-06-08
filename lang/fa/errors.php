@@ -21,5 +21,5 @@ return [
     'Server Error Occured' => 'خطای سمت سرور',
     'User Not Logged In' => 'احراز هویت کاربری انجام نشده است',
     'Referral Is Invalid' => 'کد معرف نامعتبر است',
-    'Phone Number Is Invalid' => 'شماره تلفن نامعتبر است'
+    'Phone Number Is Incorrect' => 'شماره تلفن نادرست است'
 ];

@@ -115,14 +115,21 @@ class LoginController extends Controller
 
     public function OtpLogin(OtpLoginRequest $request){
         
-        if($this->phoneNumber == $request->phone){
+        try{
             $user = User::where('phone', $request->phone)->first();
-        //dd($request->phone);
-        $dbCode = UserCodes::where([
-            ['user-id','=',$user->id],
-            ['expired','=',0],
-            ['expire_date','>=',date('Y-m-d H:i:s')]
-        ])->first();
+            $dbCode = UserCodes::where([
+                ['user-id','=',$user->id],
+                ['expired','=',0],
+                ['expire_date','>=',date('Y-m-d H:i:s')]
+            ])->first();
+        
+        }catch(Exception $e){
+            return new ErrorResource((object)[
+                'error' => __('errors.Phone Number Is Incorrect'),
+                'message' => __('errors.Phone Number Is Incorrect'),
+            ]);
+        }
+        
         if(!$dbCode || !Hash::check($request->code, $dbCode->code)){
             return new ErrorResource((object)[
                 'error' => __('errors.Credentials Are Incorrect'),
@@ -132,14 +139,6 @@ class LoginController extends Controller
         UserCodes::where('user-id',$user->id)->update(['expired'=>1]);
         return new SuccessResource((object)['data'=>(object)['accessToken'=>$user->createToken('AccessToken')->accessToken,'refreshToken'=>'','tokenType'=>'Bearer']]);
 
-        }
-        else{
-            return new ErrorResource((object)[
-                'error' => __('errors.Error'),
-                'message' => __('errors.Phone Number Is Invalid'),
-            ]);
-        }
-        
 
     }
 
