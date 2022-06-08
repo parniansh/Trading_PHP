@@ -38,6 +38,10 @@ class LoginController extends Controller
            $user = User::create(["phone"=> $request -> phone,'name'=>$request->name, "password"=>$password]);
            //(new ReferralController)->asignReferralCode($request->parentReferralCode, $user->id);
           $ref = app('App\Http\Controllers\ReferralController')->asignReferralCode($request->parentReferralCode, $user->id);
+          if(is_object($ref)){
+            return $ref;
+          }
+
            // app(ReferralController::class)->asignReferralCode($request->parentReferralCode, $user->id);
         }else{
             $user = User::where("phone",$request -> phone)->update(["password"=>$password]);
@@ -74,7 +78,8 @@ class LoginController extends Controller
     }
 
     public function OtpLogin(OtpLoginRequest $request){
-        $user = User::where('phone', $request -> phone)->first();
+        $user = User::where('phone', $request->phone)->first();
+        //dd($request->phone);
         $dbCode = UserCodes::where([
             ['user-id','=',$user->id],
             ['expired','=',0],

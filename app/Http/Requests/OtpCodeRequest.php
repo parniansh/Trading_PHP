@@ -29,7 +29,8 @@ class OtpCodeRequest extends FormRequest
     {
         return [
             'phone' => ['required','min:11','max:11','regex:/^([0-9\s\-\+\(\)]*)$/'],
-            'name' => ['string']
+            'name' => ['string'],
+            'parentReferralCode' => ['string']
         ];
     }
     protected function failedValidation(Validator $validator)
