@@ -15,33 +15,69 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Kavenegar;
 use App\Http\Controllers\ReferralController;
+use App\Models\Referral;
 
 class LoginController extends Controller
 {
     //
+    private $phoneNumber; 
+    public function createUser(Request $request, string $password){
+    
+        $validation = Validator::make(['name'=>$request->name],[
+            'name' => 'required'
+        ]);
+        if($validation->fails()){
+            return new ErrorResource((object)[
+                'error' => __('validation.RequestValidation'),
+                'message' => (new SerializeValidationErrorResponseHelper((object)$validation->errors()))->result,
+            ]);
+        }
+    $user = User::create(["phone"=> $request -> phone,'name'=>$request->name, "password"=>$password]);
+
+    $ref = $this->asignReferralCode($request->parentReferralCode, $user->id);
+
+    if(is_object($ref)){
+        return $ref;
+    }
+    }
+
+
+    public function asignReferralCode($parentReferralCode, $userId){
+        // $userId = $request->userId;
+        // $parentReferralCode = $request->parentReferralCode;
+           $referralCode = uniqid();
+           if(!$parentReferralCode){
+            $parentId = null;
+            $categorySerial = strval($userId);
+           }else{
+            $parentReferral_DB = Referral::where(["referral_code"=> $parentReferralCode])->first();
+            if(!$parentReferral_DB){
+                return new ErrorResource((object)[
+                    'error' => __('errors.Error'),
+                    'message' => __('errors.Referral Is Invalid'),
+                ]);
+            }
+            $parentId =$parentReferral_DB->user_id ;
+            $categorySerial = $parentReferral_DB->category_serial.'/'.$userId;
+    
+           }
+          $referral = Referral::create(['user_id'=> $userId, 'referral_code'=> $referralCode, 'parent_id'=>$parentId ,
+           'category_serial'=> $categorySerial]);
+    
+           return  $referral;
+       }
+
+
     public function otpCodeRequest(OtpCodeRequest $request){
+        
+        $this->phoneNumber = $request->phone;
         $user = User::where('phone', $request -> phone) ->first();
         $token = rand(100000,999999);
         $now = strtotime(date('Y-m-d H:i:s'));
         $expire_date = date('Y-m-d H:i:s',$now+(env('OTP_EXPIRE_MINUTES')*60));
         $password = Hash::make($token);
-        if(!$user){
-            $validation = Validator::make(['name'=>$request->name],[
-                'name' => 'required'
-            ]);
-            if($validation->fails()){
-                return new ErrorResource((object)[
-                    'error' => __('validation.RequestValidation'),
-                    'message' => (new SerializeValidationErrorResponseHelper((object)$validation->errors()))->result,
-                ]);
-            }
-           $user = User::create(["phone"=> $request -> phone,'name'=>$request->name, "password"=>$password]);
-           //(new ReferralController)->asignReferralCode($request->parentReferralCode, $user->id);
-          $ref = app('App\Http\Controllers\ReferralController')->asignReferralCode($request->parentReferralCode, $user->id);
-          if(is_object($ref)){
-            return $ref;
-          }
-
+        if(!$user){          
+            $this->createUser($request,$password);
            // app(ReferralController::class)->asignReferralCode($request->parentReferralCode, $user->id);
         }else{
             $user = User::where("phone",$request -> phone)->update(["password"=>$password]);
@@ -78,7 +114,9 @@ class LoginController extends Controller
     }
 
     public function OtpLogin(OtpLoginRequest $request){
-        $user = User::where('phone', $request->phone)->first();
+        
+        if($this->phoneNumber == $request->phone){
+            $user = User::where('phone', $request->phone)->first();
         //dd($request->phone);
         $dbCode = UserCodes::where([
             ['user-id','=',$user->id],
@@ -94,6 +132,14 @@ class LoginController extends Controller
         UserCodes::where('user-id',$user->id)->update(['expired'=>1]);
         return new SuccessResource((object)['data'=>(object)['accessToken'=>$user->createToken('AccessToken')->accessToken,'refreshToken'=>'','tokenType'=>'Bearer']]);
 
+        }
+        else{
+            return new ErrorResource((object)[
+                'error' => __('errors.Error'),
+                'message' => __('errors.Phone Number Is Invalid'),
+            ]);
+        }
+        
 
     }
 

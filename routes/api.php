@@ -19,7 +19,6 @@ Route::group(['prefix'=>'v1'],function(){
     Route::group(['prefix'=>'auth'],function(){
         Route::post('/get-otp-code', [LoginController::class, 'otpCodeRequest']);
         Route::post('/token', [LoginController::class, 'OtpLogin']);
-        Route::post('/referral', [ReferralController::class, 'asignReferralCode']);
 
     
     });
