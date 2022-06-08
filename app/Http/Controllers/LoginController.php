@@ -20,7 +20,6 @@ use App\Models\Referral;
 class LoginController extends Controller
 {
     //
-    private $phoneNumber; 
     public function createUser(Request $request, string $password){
     
         $validation = Validator::make(['name'=>$request->name],[
