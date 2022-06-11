@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserWalletRequest;
+use App\Http\Resources\ErrorResource;
 use App\Models\UserWallet;
-use GuzzleHttp\Promise\Create;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,18 +22,22 @@ class UserWalletController extends Controller
             "user_id" => $user->id,
             "token_type" => $request->tokenType,
             ]);
+            return $userWallet;
     }
+    
     
     public function getList(Request $request){
 
-        $walletList = auth()->user()->userWallet->latest()->take(100);
+        $walletList = auth()->user()->userWallet->take(100);
         return $walletList;
     }
 
-    public function get(Request $request){
+    public function getById(Request $request){
+       
         $user = Auth::user();
-        $walletRecord = auth()->user()->userWallet->find($request->userWalletId);
-        return $walletRecord;
+       $walletRecord = $user->userWallet->find($request->userWalletId);
+       return $walletRecord;
+
 
     }
 }

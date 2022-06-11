@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ReferralController;
+use App\Http\Controllers\UserWalletController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,4 +28,5 @@ Route::group(['prefix'=>'v1'],function(){
             include_once $fileName;
         }
     });
+    
 });

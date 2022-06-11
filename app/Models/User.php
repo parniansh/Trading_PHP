@@ -48,6 +48,6 @@ class User extends Authenticatable
     }
 
     public function userWallet(){
-        return $this->hasMany(UserWallet::class);
+        return $this->hasMany(UserWallet::class)->latest();
     }
 }

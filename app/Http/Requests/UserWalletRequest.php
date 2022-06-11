@@ -2,14 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Helpers\SerializeValidationErrorResponseHelper;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Http\Resources\ErrorResource;
 use Illuminate\Contracts\Validation\Validator;
-
-
-
+use Illuminate\Foundation\Http\FormRequest;
 
 class UserWalletRequest extends FormRequest
 {
@@ -20,7 +17,7 @@ class UserWalletRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -31,8 +28,8 @@ class UserWalletRequest extends FormRequest
     public function rules()
     {
         return [
-            'transKind' => ['required|in:0,1'],
-            'tokenType' => ['required|in:0,1'],
+            'transKind' => ['required'],
+            'tokenType' => ['required'],
             'amount' => ['required']
         ];
     }
