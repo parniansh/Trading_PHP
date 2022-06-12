@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserWallet extends Model
+class UserWalletTransactions extends Model
 {
     use HasFactory;
     public $timestamps = true;
@@ -13,8 +13,10 @@ class UserWallet extends Model
 
     protected $fillable = [
         'user_id',
-        'rial_balance',
-        'mazin_balance'
+        'amount',
+        'trans_kind',
+        'token_type',
+        
     ];
 
     public function user()

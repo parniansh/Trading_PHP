@@ -8,7 +8,7 @@ use App\Http\Resources\ErrorResource;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserWalletRequest extends FormRequest
+class UserWalletTransactionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,8 +28,8 @@ class UserWalletRequest extends FormRequest
     public function rules()
     {
         return [
-            'transKind' => ['required'],
-            'tokenType' => ['required'],
+            'transKind' => ['required', 'regex:/^[0-1]+/'],
+            'tokenType' => ['required', 'regex:/^[0-1]+/'],
             'amount' => ['required']
         ];
     }

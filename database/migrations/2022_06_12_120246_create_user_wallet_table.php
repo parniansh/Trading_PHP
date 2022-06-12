@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_wallet_transactions', function (Blueprint $table) {
+        Schema::create('user_wallet', function (Blueprint $table) {
             $table->id();
-            $table->float('amount');
-            $table->integer('trans_kind');
             $table->integer('user_id')->unsigned();
-            $table->integer('token_type');
+            $table->float('rial_balance');
+            $table->integer('mazin_balance')->unsigned();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_wallet_transactions');
+        Schema::dropIfExists('user_wallet');
     }
 };
