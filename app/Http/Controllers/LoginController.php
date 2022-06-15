@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\SerializeValidationErrorResponseHelper;
 use App\Http\Requests\OtpCodeRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\OtpLoginRequest;
 use App\Http\Resources\ErrorResource;
 use App\Http\Resources\SuccessResource;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use App\Models\UserCodes;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Kavenegar;
 
 class LoginController extends Controller
