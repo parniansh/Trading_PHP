@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class OtpCodeRequest extends FormRequest
+class RegisterUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,8 +28,8 @@ class OtpCodeRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => ['required','min:11','max:11','regex:/^([0-9\s\-\+\(\)]*)$/'],
-        ];
+            'name' => ['required'],
+            'parentReferralCode' => ['string','exists:referrals,referral_code']        ];
     }
     protected function failedValidation(Validator $validator)
     {
