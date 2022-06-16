@@ -127,13 +127,13 @@ class LoginController extends Controller
         try {
             $id = Auth::user()->id;
             $user = User::find($id);
-            if ($user->created_at == $user->updated_at) {
+            if ($user->created_at == $user->updated_at || $user->name == null) {
                 $user->update(['name' => $request->name]);
                 return  $this->asignReferralCode((isset($request->parentReferralCode) && strlen($request->parentReferralCode) > 0) ? $request->parentReferralCode : null, $id);    
             } else {
                 return new ErrorResource((object)[
                     'error' => __('errors.Credentials Are Incorrect'),
-                    'message' => __('errors.Credentials Are Incorrect'),
+                    'message' => __('errors.Credentials Are Incorrect')
                 ]);
             }
         } catch (Exception $e) {
