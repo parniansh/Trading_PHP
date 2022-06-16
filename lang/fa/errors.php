@@ -22,5 +22,6 @@ return [
     'User Not Logged In' => 'احراز هویت کاربری انجام نشده است',
     'Referral Is Invalid' => 'کد معرف نامعتبر است',
     'Phone Number Is Incorrect' => 'شماره تلفن نادرست است',
-    'Wallet Already Exists'=> 'کیف پول موجود است'
+    'Wallet Already Exists'=> 'کیف پول موجود است',
+    'Balance Is Not Enough' => 'موجودی کافی نیست'
 ];

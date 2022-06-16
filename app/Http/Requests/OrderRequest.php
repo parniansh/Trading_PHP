@@ -30,7 +30,7 @@ class OrderRequest extends FormRequest
     {
         return [
             'amount' => ['required'],
-            'orderType' => ['required', 'regex:/^[0-1]+/']
+            'orderType' => ['required']
             //
         ];
     }

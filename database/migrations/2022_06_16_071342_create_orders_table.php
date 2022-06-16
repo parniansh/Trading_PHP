@@ -18,9 +18,9 @@ return new class extends Migration
             $table->integer('user_id')->unsigned();
             $table->float('amount')->unsigned();
             $table->float('unit_price')->unsigned();
-            $table->integer('order_type')->unsigned();
+            $table->string('order_type')->unsigned();
             $table->float('balance');
-            $table->integer('state');
+            $table->integer('state')->nullable();
             $table->timestamps();
         });
     }
