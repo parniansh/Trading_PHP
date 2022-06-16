@@ -13,14 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_wallets', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->unsigned();
-            $table->float('rial_balance');
-            $table->integer('mazin_balance')->unsigned();
+            $table->float('amount')->unsigned();
+            $table->float('unit_price')->unsigned();
+            $table->string('order_type')->unsigned();
+            $table->float('balance');
+            $table->integer('state')->nullable();
             $table->timestamps();
         });
     }
+
+
 
     /**
      * Reverse the migrations.
@@ -29,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_wallet');
+        Schema::dropIfExists('orders');
     }
 };

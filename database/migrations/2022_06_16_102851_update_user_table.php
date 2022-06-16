@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_wallets', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id')->unsigned();
-            $table->float('rial_balance');
-            $table->integer('mazin_balance')->unsigned();
-            $table->timestamps();
+        //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('name');
         });
     }
 
@@ -29,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_wallet');
+        //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('name');
+                   });
     }
 };
