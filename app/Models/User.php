@@ -43,7 +43,7 @@ class User extends Authenticatable
     
 
     public function referral_code(){
-        return $this->hasOne(Refferal::class);
+        return $this->hasOne(Referral::class);
     }
 
     public function userWalletTransaction(){
