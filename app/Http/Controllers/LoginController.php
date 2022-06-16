@@ -48,7 +48,7 @@ class LoginController extends Controller
     {
 
         $referralCode = uniqid();
-        if (!$parentReferralCode) {
+        if (!$parentReferralCode || $parentReferralCode == null) {
             $parentId = null;
             $categorySerial = strval($userId);
         } else {
@@ -129,7 +129,7 @@ class LoginController extends Controller
             $user = User::find($id);
             if ($user->created_at == $user->updated_at) {
                 $user->update(['name' => $request->name]);
-                return  $this->asignReferralCode($request->parentReferralCode, $id);
+                return  $this->asignReferralCode((isset($request->parentReferralCode) && strlen($request->parentReferralCode) > 0) ? $request->parentReferralCode : null, $id);    
             } else {
                 return new ErrorResource((object)[
                     'error' => __('errors.Credentials Are Incorrect'),
