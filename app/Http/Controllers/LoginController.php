@@ -86,7 +86,12 @@ class LoginController extends Controller
             $user = User::create(["phone" => $request->phone, "name" => $request->phone, "password" => $password]);
             $state = ['state' => 0, 'stateToString' => __('userState.zero')];
         } else {
-            $state = ['state' => 1, 'stateToString' => __('userState.one')];
+            if(!$user->name){
+                $state = ['state' => 0, 'stateToString' => __('userState.zero')];
+            }else{
+                $state = ['state' => 1, 'stateToString' => __('userState.one')];
+            }
+                
         }
         $usercode = UserCodes::where("user-id", $user->id)->first();
         if (!$usercode) {
