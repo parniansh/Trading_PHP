@@ -127,7 +127,7 @@ class LoginController extends Controller
         try {
             $id = Auth::user()->id;
             $user = User::find($id);
-            if ($user->created_at == $user->updated_at) {
+            if (!$user->name) {
                 $user->update(['name' => $request->name]);
                 return  $this->asignReferralCode($request->parentReferralCode, $id);
             } else {
