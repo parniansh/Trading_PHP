@@ -29,7 +29,7 @@ class RegisterUserRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-        ];
+            'parentReferralCode' => ['string','exists:referrals,referral_code']        ];
     }
     protected function failedValidation(Validator $validator)
     {
