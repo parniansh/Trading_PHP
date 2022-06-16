@@ -19,5 +19,7 @@ return [
     'KeveNegarHttpException' => 'نرم افزار نتوانست به سرور OTP متصل شود.',
     'Credentials Are Incorrect' => 'دسترسی ممکن نیست',
     'Server Error Occured' => 'خطای سمت سرور',
-    'User Not Logged In' => 'احراز هویت کاربری انجام نشده است'
+    'User Not Logged In' => 'احراز هویت کاربری انجام نشده است',
+    'Referral Is Invalid' => 'کد معرف نامعتبر است',
+    'Phone Number Is Incorrect' => 'شماره تلفن نادرست است'
 ];
