@@ -19,6 +19,6 @@ class UsersController extends Controller
     }
     public function getReferral($id){
         $referral = User::find($id)->referral_code;
-        return $referral;
+        return $referral->referral_code;
     }
 }
