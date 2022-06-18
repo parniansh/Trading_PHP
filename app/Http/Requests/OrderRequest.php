@@ -30,7 +30,8 @@ class OrderRequest extends FormRequest
     {
         return [
             'amount' => ['required'],
-            'orderType' => ['required']
+            'orderType' => ['required'],
+            'orderId' => ['integer']
             //
         ];
     }

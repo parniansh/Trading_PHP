@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Http\Requests\UserWalletRequest;
 use App\Http\Requests\UserWalletTransactionRequest;
+use App\Models\User;
 use App\Models\UserWalletTransactions as ModelsUserWalletTransactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,17 +24,16 @@ trait UserWalletTransactions
             return $userWalletTrans;
     }
 
-    public function getList(Request $request){
+    public function getList(int $id){
 
-        $walletTransList = auth()->user()->userWalletTransaction->take(100);
-        return $walletTransList;
+        return User::find($id)->userWalletTransaction->take(100);
+        
     }
 
-    public function getById(Request $request){
+    public function getById(int $id){
        
-        $user = Auth::user();
-       $userWalletTrans = $user->userWalletTransaction->find($request->userWalletId);
-       return $userWalletTrans;
+        return ModelsUserWalletTransactions::find($id)->first();
+       
 
 
     }

@@ -13,32 +13,61 @@ class OrderController extends Controller
 {
     use UserWallets;
 
-    public function addOrder(OrderRequest $request){
-         $user = Auth::user();
-         $amount = $request->amount;
-         $unitPrice = 1000;
-         if($request->orderType == 'buy'){
+    public function addOrder(OrderRequest $request)
+    {
+        $user = Auth::user();
+        $amount = $request->amount;
+        $unitPrice = 1000;
+        if ($request->orderType == 'buy') {
             $balance = $this->getById($user->id)->rial_balance;
-            $total = $amount*$unitPrice;
-            
-         }else{
+            $total = $amount * $unitPrice;
+        } else if ($request->orderType == 'sale') {
             $balance = $this->getById($user->id)->mazin_balance;
             $total = $amount;
-            
-         }
-         if($balance >= $total){
-            //add order
-            $order = Order::create(['user_id'=> $user->id, 'amount'=> $amount, 
-            'unit_price' => $unitPrice, 'order_type'=>$request->orderType,'balance'=>$balance]);
-        }else{
+        }
+        if ($balance >= $total) {
+            //balance ba che uniti too table save beshe?
+            $order = Order::create([
+                'user_id' => $user->id, 'amount' => $amount,
+                'unit_price' => $unitPrice, 'order_type' => $request->orderType, 'balance' => $balance
+            ]);
+        } else {
             return new ErrorResource((object)[
                 'error' => __('errors.Error'),
                 'message' => __('errors.Balance Is Not Enough'),
             ]);
         }
         return $order;
-
     }
 
-    
+    public function updateOrder(OrderRequest $request)
+    {
+
+        $order = Order::find($request->orderId);
+        if ($order->user_id == Auth::user()->id) {
+            $order->amount = $request->amount;
+            $order->order_type = $request->orderType;
+            $order->save();
+            return $order;
+        } else {
+            return new ErrorResource((object)[
+                'error' => __('errors.Error'),
+                'message' => __('errors.Credentials Are Incorrect'),
+            ]);
+        }
+    }
+
+
+    public function deleteOrder(OrderRequest $request)
+    {
+        $order = Order::find($request->orderId);
+        if ($order->user_id == Auth::user()->id) {
+            Order::find($request->orderId)->delete();
+        } else {
+            return new ErrorResource((object)[
+                'error' => __('errors.Error'),
+                'message' => __('errors.Credentials Are Incorrect'),
+            ]);
+        }
+    }
 }

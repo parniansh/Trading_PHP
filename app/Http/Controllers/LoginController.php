@@ -24,26 +24,26 @@ class LoginController extends Controller
 {
     use UserWallets;
 
-    public function createUser(Request $request, string $password)
-    {
+    // public function createUser(Request $request, string $password)
+    // {
 
-        $validation = Validator::make(['name' => $request->name], [
-            'name' => 'required'
-        ]);
-        if ($validation->fails()) {
-            return new ErrorResource((object)[
-                'error' => __('validation.RequestValidation'),
-                'message' => (new SerializeValidationErrorResponseHelper((object)$validation->errors()))->result,
-            ]);
-        }
-        $user = User::create(["phone" => $request->phone, 'name' => $request->name, "password" => $password]);
+    //     $validation = Validator::make(['name' => $request->name], [
+    //         'name' => 'required'
+    //     ]);
+    //     if ($validation->fails()) {
+    //         return new ErrorResource((object)[
+    //             'error' => __('validation.RequestValidation'),
+    //             'message' => (new SerializeValidationErrorResponseHelper((object)$validation->errors()))->result,
+    //         ]);
+    //     }
+    //     $user = User::create(["phone" => $request->phone, 'name' => $request->name, "password" => $password]);
 
-        $ref = $this->asignReferralCode($request->parentReferralCode, $user->id);
+    //     $ref = $this->asignReferralCode($request->parentReferralCode, $user->id);
 
-        if (is_object($ref)) {
-            return $ref;
-        }
-    }
+    //     if (is_object($ref)) {
+    //         return $ref;
+    //     }
+    // }
 
 
     public function asignReferralCode($parentReferralCode, $userId)
