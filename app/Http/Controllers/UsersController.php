@@ -14,15 +14,11 @@ class UsersController extends Controller
     //
     public function get(Request $request){
         $user = Auth::user();
-
+        $user->referral_code = $this->getReferral($user->id);
         return new SuccessResource((object)['data'=>$user]);
     }
-    public function getReferral(Request $request){
-
-        $user = Auth::user();
-        $referral = User::find($user->id)->referral_code;
-        
-        return new SuccessResource((object)['data'=>$referral]);
-
+    public function getReferral($id){
+        $referral = User::find($id)->referral_code;
+        return $referral->referral_code;
     }
 }
