@@ -15,7 +15,6 @@ class OrderController extends Controller
 
     public function addOrder(OrderRequest $request){
          $user = Auth::user();
-        $userWaleet = $this->add(123456,10);
          $amount = $request->amount;
          $unitPrice = 1000;
          if($request->orderType == 'buy'){
@@ -40,4 +39,6 @@ class OrderController extends Controller
         return $order;
 
     }
+
+    
 }

@@ -12,13 +12,12 @@ use Illuminate\Support\Facades\Auth;
 trait UserWallets{
 
 
-    public function add(float $rialBalance , float $mazinBalance ){
+    public function add(float $rialBalance , float $mazinBalance, int $userid ){
         //fekr konam auth ro bayad bardaram   ???
-        $user = Auth::user();
-        $userwallet = UserWallet::where(['user_id'=> $user->id])->first();
+        $userwallet = UserWallet::where(['user_id'=> $userid])->first();
         if(!$userwallet){
             $userWallet = UserWallet::Create([
-                "user_id" => $user->id,
+                "user_id" => $userid,
                 "rial_balance" => $rialBalance,
                 "mazin_balance" => $mazinBalance,
                 ]);

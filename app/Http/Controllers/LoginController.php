@@ -17,11 +17,13 @@ use Illuminate\Support\Facades\Hash;
 use Kavenegar;
 use App\Http\Controllers\ReferralController;
 use App\Models\Referral;
+use App\Traits\UserWallets;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
-    //
+    use UserWallets;
+
     public function createUser(Request $request, string $password)
     {
 
@@ -84,6 +86,7 @@ class LoginController extends Controller
         $user = User::where('phone', $request->phone)->first();
         if (!$user) {
             $user = User::create(["phone" => $request->phone, "name" => $request->phone, "password" => $password]);
+            $userWalet = $this->add(0,0,$user->id);
             $state = ['state' => 0, 'stateToString' => __('userState.zero')];
         } else {
             if(!$user->name){
