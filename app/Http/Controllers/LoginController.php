@@ -85,7 +85,7 @@ class LoginController extends Controller
         $password = Hash::make($token);
         $user = User::where('phone', $request->phone)->first();
         if (!$user) {
-            $user = User::create(["phone" => $request->phone, "name" => $request->phone, "password" => $password]);
+            $user = User::create(["phone" => $request->phone, "password" => $password]);
             $userWalet = $this->add(0,0,$user->id);
             $state = ['state' => 0, 'stateToString' => __('userState.zero')];
         } else {
