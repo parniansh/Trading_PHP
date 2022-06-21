@@ -31,6 +31,8 @@ return array(
     'App\\Http\\Resources\\SuccessResource' => $baseDir . '/app/Http/Resources/SuccessResource.php',
     'App\\Models\\Order' => $baseDir . '/app/Models/Order.php',
     'App\\Models\\OrderExecution' => $baseDir . '/app/Models/OrderExecution.php',
+    'App\\Models\\Payment' => $baseDir . '/app/Models/Payment.php',
+    'App\\Models\\PaymentExecution' => $baseDir . '/app/Models/PaymentExecution.php',
     'App\\Models\\Referral' => $baseDir . '/app/Models/Referral.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Models\\UserCodes' => $baseDir . '/app/Models/UserCodes.php',

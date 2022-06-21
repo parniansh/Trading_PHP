@@ -29,9 +29,10 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => ['required'],
-            'orderType' => ['required'],
-            'orderId' => ['integer']
+            'amount' => ['numeric', 'regex:/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/'],
+            'orderType' => [ 'regex:/^[0-1]+/'],
+            'orderId' => ['integer'],
+            'unitPrice' => ['numeric']
             //
         ];
     }

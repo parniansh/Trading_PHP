@@ -17,7 +17,9 @@ class Order extends Model
         'unit_price',
         'order_type',
         'balance',
-        'state'
+        'state',
+        'balance_type',
+        'remain'
         
     ];
     

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserWallet extends Model
+class Payment extends Model
 {
     use HasFactory;
     public $timestamps = true;
@@ -13,14 +13,13 @@ class UserWallet extends Model
 
     protected $fillable = [
         'user_id',
-        'rial_balance',
-        'mazin_balance',
-        'freezed_rial',
-        'freezed_mazin'
+        'amount',
+        'paymant_type',
+        'state'
+        
+        
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+    public function paymentExecution(){
+        return $this->hasOne(PaymentExecution::class);
     }
 }

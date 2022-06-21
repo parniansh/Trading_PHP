@@ -32,9 +32,10 @@ trait UserWallets{
 
     public function update(Request $request){
         $userWallet = UserWallet::where(["user_id"=> $request->userId])->first();
-        $userWallet->update(['rial_balance'=> $request->rialBalance,'mazin_balance'=> $request->mazinBalance]);
-      return $userWallet;
+        return $userWallet->update(array_filter($request->all()));
+       
     }
+
 
     public function getById(int $id){
         return UserWallet::find($id)->first;

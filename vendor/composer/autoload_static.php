@@ -629,6 +629,8 @@ class ComposerStaticInitd15c49fb9f138eee6daa37e1faa48e19
         'App\\Http\\Resources\\SuccessResource' => __DIR__ . '/../..' . '/app/Http/Resources/SuccessResource.php',
         'App\\Models\\Order' => __DIR__ . '/../..' . '/app/Models/Order.php',
         'App\\Models\\OrderExecution' => __DIR__ . '/../..' . '/app/Models/OrderExecution.php',
+        'App\\Models\\Payment' => __DIR__ . '/../..' . '/app/Models/Payment.php',
+        'App\\Models\\PaymentExecution' => __DIR__ . '/../..' . '/app/Models/PaymentExecution.php',
         'App\\Models\\Referral' => __DIR__ . '/../..' . '/app/Models/Referral.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Models\\UserCodes' => __DIR__ . '/../..' . '/app/Models/UserCodes.php',
