@@ -16,6 +16,8 @@ class UserWalletTransactions extends Model
         'amount',
         'trans_kind',
         'token_type',
+        'execution_id',
+        'payment_id'
         
     ];
 

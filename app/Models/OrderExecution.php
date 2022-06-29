@@ -12,9 +12,9 @@ class OrderExecution extends Model
     public $timestamps = true;
 
     protected $fillable= [
-        'order_Id',
+        'order_id',
         'amount',
-        'price'
+        'unit_price'
     ];
 
     public function order()

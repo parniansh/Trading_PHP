@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         //
-        Schema::table('order_executions', function (Blueprint $table) {
+        Schema::table('user_wallet_transactions', function (Blueprint $table) {
             //
-            $table->dropColumn('price');
+            $table->string('trans_kind');
             
 
         });
@@ -30,12 +30,8 @@ return new class extends Migration
     public function down()
     {
         //
-        Schema::table('order_executions', function (Blueprint $table) {
-            //
-            $table->float('unit_price');
-            
-
+        Schema::table('user_wallet_transactions', function (Blueprint $table) {
+            $table->dropColumn('trans_kind');
         });
-
     }
 };

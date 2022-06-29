@@ -20,7 +20,7 @@ class OrderExecutionHandling
         }
 
 
-        public function __invoke()
+    public function __construct()
     {
         $this->bestOrders();
 
@@ -29,10 +29,10 @@ class OrderExecutionHandling
     public function bestOrders()
     {
         $bestBuyer = Order::where(['order_type' => '0', 'state' => null])
-            ->orWhere(['order_type' => '0', 'state' => 1])->orderBy('unit_price')->limit(1)->get();
+            ->orWhere(['order_type' => '0', 'state' => 1])->orderBy('unit_price')->first();
         $bestSeller = Order::where(['order_type' => '1', 'state' => null])
-            ->orwhere(['order_type' => '1', 'state' => 1])->orderby('unit_price', 'desc')->limit(1)->get();
-        if ($bestBuyer->unit_price == $bestSeller) {
+            ->orwhere(['order_type' => '1', 'state' => 1])->orderby('unit_price', 'desc')->first();
+        if ($bestBuyer->unit_price == $bestSeller->unit_price) {
             $this->handleTrade($bestSeller, $bestBuyer);
         } else {
             $this->Log::error("deal didnt succeded");
@@ -64,7 +64,9 @@ class OrderExecutionHandling
         if($remain == 0){
             $order->update(['remain'=>0, 'state'=>1]);
         }else{
+
             $order->update(['remain'=>$remain, 'state'=>0]);
+
         }
     }
 
@@ -88,14 +90,14 @@ class OrderExecutionHandling
     }
 
     public function orderExecutionRecordCreate(Order $order, float $tradeAmount){
-
+        //var_dump($order->id);
         $orderExeRecord = OrderExecution::create(['order_id'=>$order->id, 
         'amount'=>$tradeAmount, 'unit_price'=>$order->unit_price]);
+        //var_dump($orderExeRecord);
         return $orderExeRecord->id;
     }
 
     public function transactionRecordCreate(int $orderExeId , Order $order, float $tradeAmount, int $exeId){
-
         $userWalletTransReq = new UserWalletTransactionRequest(['amount'=>$tradeAmount, 
                     'trans_kind'=>$order->order_type,'user_id'=>$order->user_id,
                     'token_type'=>$order->balance_type,'execution_id'=>$exeId]);

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id')->unsigned();
             $table->float('rial_balance');
-            $table->integer('mazin_balance')->unsigned();
+            $table->float('mazin_balance')->unsigned();
             $table->timestamps();
         });
     }

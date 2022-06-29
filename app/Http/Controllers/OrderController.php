@@ -20,19 +20,19 @@ class OrderController extends Controller
 
     public function __construct()
     {
-        
+        $this->middleware(function($request,$next){
+            $user = Auth::user();
+            $getByUser = $this->getByUser($user->id);
+            $this->rial_balance = $getByUser->rial_balance;
+            $this->freezed_rial = $getByUser->freezed_rial;
+            $this->mazin_balance = $getByUser->mazin_balance;
+            $this->freezed_mazin = $getByUser->freezed_mazin;
+            $this->user = $user;
+            return $next($request);
+        });
     }
     public function addOrder(OrderRequest $request)
-    {
-        $user = Auth::user();
-        $getByUser = $this->getByUser($user->id);
-        $this->rial_balance = $getByUser->rial_balance;
-        $this->freezed_rial = $getByUser->freezed_rial;
-        $this->mazin_balance = $getByUser->mazin_balance;
-        $this->freezed_mazin = $getByUser->freezed_mazin;
-        $this->user = $user;
-        
-        
+    {   
         $amount = $request->amount;
         $unitPrice = $request->unitPrice;
         $orderType = $request->orderType;
@@ -82,7 +82,7 @@ class OrderController extends Controller
     public function deleteOrder(OrderRequest $request)
     {
         $order = Order::find($request->orderId);
-        if ($order->user_id == Auth::user()->id) {
+        if ($order && $order->user_id == $this->user->id) {
             
             if($order->order_type == 0){
                 $userWalletFreezedRial = $this->getByUser($order->user_id)->freezed_rial;

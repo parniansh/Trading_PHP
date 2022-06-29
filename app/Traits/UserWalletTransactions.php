@@ -12,12 +12,12 @@ trait UserWalletTransactions
 
 
     public function add(UserWalletTransactionRequest $request){
-        $user = Auth::user();
         $userWalletTrans = ModelsUserWalletTransactions::Create([
             "amount" => $request->amount,
-            "trans_kind" => $request->transKind,
-            "user_id" => $user->id,
-            "token_type" => $request->tokenType,
+            "trans_kind" => $request->trans_kind,
+            "user_id" => $request->user_id,
+            "token_type" => $request->token_type,
+            "execution_id"=>$request->execution_id
             ]);
             return $userWalletTrans;
     }
