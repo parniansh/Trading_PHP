@@ -23,5 +23,6 @@ return [
     'Referral Is Invalid' => 'کد معرف نامعتبر است',
     'Phone Number Is Incorrect' => 'شماره تلفن نادرست است',
     'Wallet Already Exists'=> 'کیف پول موجود است',
-    'Balance Is Not Enough' => 'موجودی کافی نیست'
+    'Balance Is Not Enough' => 'موجودی کافی نیست',
+    'Edit Is Not Possible'=> 'ویرایش ممکن نیست'
 ];

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\SerializeValidationErrorResponseHelper;
 use App\Http\Requests\OtpCodeRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\OtpLoginRequest;
@@ -15,10 +14,9 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Kavenegar;
-use App\Http\Controllers\ReferralController;
 use App\Models\Referral;
 use App\Traits\UserWallets;
-use Illuminate\Support\Facades\Validator;
+
 
 class LoginController extends Controller
 {

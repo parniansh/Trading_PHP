@@ -606,6 +606,7 @@ class ComposerStaticInitd15c49fb9f138eee6daa37e1faa48e19
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Helpers\\OrderExecutionHandling' => __DIR__ . '/../..' . '/app/Helpers/OrderExecutionHandling.php',
         'App\\Helpers\\SerializeValidationErrorResponseHelper' => __DIR__ . '/../..' . '/app/Helpers/SerializeValidationErrorResponseHelper.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/LoginController.php',

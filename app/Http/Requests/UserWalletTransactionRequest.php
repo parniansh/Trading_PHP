@@ -30,7 +30,10 @@ class UserWalletTransactionRequest extends FormRequest
         return [
             'transKind' => ['required', 'regex:/^[0-1]+/'],
             'tokenType' => ['required', 'regex:/^[0-1]+/'],
-            'amount' => ['required']
+            'amount' => ['required'],
+            'user_id',
+            'execution_id',
+            'payment_id'
         ];
     }
     protected function failedValidation(Validator $validator)

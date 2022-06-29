@@ -2,11 +2,9 @@
 
 namespace App\Traits;
 
-use App\Http\Requests\UserWalletRequest;
 use App\Http\Requests\UserWalletTransactionRequest;
 use App\Models\User;
 use App\Models\UserWalletTransactions as ModelsUserWalletTransactions;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 trait UserWalletTransactions

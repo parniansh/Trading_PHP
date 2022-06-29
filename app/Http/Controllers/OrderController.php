@@ -6,6 +6,7 @@ use App\Http\Requests\OrderRequest;
 use App\Http\Resources\ErrorResource;
 use App\Http\Resources\SuccessResource;
 use App\Models\Order;
+use App\Traits\OrderExecutions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\UserWallets;
@@ -15,39 +16,50 @@ class OrderController extends Controller
 {
     use UserWallets;
 
-    public function addOrder(OrderRequest $request)
+    private $rial_balance,$freezed_rial,$mazin_balance,$freezed_mazin,$user;
+
+    public function __construct()
     {
         
+    }
+    public function addOrder(OrderRequest $request)
+    {
         $user = Auth::user();
+        $getByUser = $this->getByUser($user->id);
+        $this->rial_balance = $getByUser->rial_balance;
+        $this->freezed_rial = $getByUser->freezed_rial;
+        $this->mazin_balance = $getByUser->mazin_balance;
+        $this->freezed_mazin = $getByUser->freezed_mazin;
+        $this->user = $user;
+        
+        
         $amount = $request->amount;
         $unitPrice = $request->unitPrice;
         $orderType = $request->orderType;
-        $userWallet = $this->getByUser($user->id);
 
         //orderType :
         // 0: buy
         // 1: sale
         if ($orderType == 0) {
-            $balance = $this->getByUser($user->id)->rial_balance - $this->getByUser($user->id)->freezed_rial;
+            $balance = $this->rial_balance - $this->freezed_rial;
             $balanceType = 0; //rial
             $total = $amount * $unitPrice;
-            $userWalletRequest = new Request(['freezed_rial'=>$total+$userWallet->freezed_rial, 'userId'=>$user->id]);
-
+            $userWalletRequest = ['freezed_rial'=>$total+$this->freezed_rial, 'userId'=>$this->user->id];
         } else if ($orderType == 1) {
-            $balance = $this->getByUser($user->id)->mazin_balance - $this->getByUser($user->id)->freezed_mazin;
+            $balance = $this->mazin_balance - $this->freezed_mazin;
             $balanceType = 1; //mazin
             $total = $amount;
-            $userWalletRequest = new Request(['freezed_mazin'=>$total+$userWallet->freezed_mazin,'userId'=>$user->id]);
-
+            $userWalletRequest = ['freezed_mazin' => $total+$this->freezed_mazin,'userId'=>$this->user->id];
         }
         if ($balance >= $total) {
             try {
                 $order = Order::create([
-                    'user_id' => $user->id, 'amount' => $amount,
+                    'user_id' => $this->user->id, 'amount' => $amount,
                     'unit_price' => $unitPrice, 'order_type' => $orderType, 'balance' => $balance,
                     'balance_type' => $balanceType, 'remain' => $amount
                 ]);
-                $this->update($userWalletRequest);
+                $this->update((object)$userWalletRequest);
+                
             } catch (Exception $e) {
                 return new ErrorResource((object)[
                     'error' => __('errors.Error'),
@@ -60,26 +72,11 @@ class OrderController extends Controller
                 'message' => __('errors.Balance Is Not Enough'),
             ]);
         }
+       // $this->handleOrder($order);
+
         return $order;
     }
 
-    public function updateOrder(OrderRequest $request)
-    {
-        //not complete
-
-        $order = Order::find($request->orderId);
-        if ($order->user_id == Auth::user()->id) {
-            $order->amount = $request->amount;
-            $order->order_type = $request->orderType;
-            $order->save();
-            return $order;
-        } else {
-            return new ErrorResource((object)[
-                'error' => __('errors.Error'),
-                'message' => __('errors.Credentials Are Incorrect'),
-            ]);
-        }
-    }
 
 
     public function deleteOrder(OrderRequest $request)
@@ -118,4 +115,18 @@ class OrderController extends Controller
             ]);
         }
     }
+
+
+    // public function test(Request $request){
+    //    try{
+    //     $o = new OrderExecutionHandling();
+    //     return $o->returnPrice();
+        
+    //    }catch(Exception $e){
+    //     return new ErrorResource((object)[
+    //         'error' => __('errors.Error'),
+    //         'message' => __('errors.Edit Is Not Possible'),
+    //     ]); 
+    //    }
+    // }
 }

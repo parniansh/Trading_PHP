@@ -6,8 +6,6 @@ use App\Http\Resources\ErrorResource;
 use App\Models\User;
 use App\Models\UserWallet;
 use Error;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 trait UserWallets{
 
@@ -30,9 +28,9 @@ trait UserWallets{
         
     }
 
-    public function update(Request $request){
-        $userWallet = UserWallet::where(["user_id"=> $request->userId])->first();
-        return $userWallet->update(array_filter($request->all()));
+    public function update(object $array){
+        $userWallet = UserWallet::where(["user_id"=> $array->userId])->first();
+        return $userWallet->update((array)$array);
        
     }
 
